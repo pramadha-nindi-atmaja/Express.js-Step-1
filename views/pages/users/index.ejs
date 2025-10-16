@@ -1,35 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Users</title>
-    <link rel='stylesheet' href='/assets/style.css' />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User List</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <%- include('../../components/navbar') %>
-    <a href="/users/create">Add</a>
-      <h1>Daftar Users (<%= users.length %>) </h1>
-      <form action="/users">
-        <input type="text" name="search">
-        <button type="submit">Cari</button>
-      </form>
-    <ul>
-      <% if(users.length > 0) { %> 
-        <% users.forEach(function(user){ %>
-          <li>
-            <!-- Json -->
-            <!-- <a href="/user/<%= user.id %> ">
-              <%= user.name.toUpperCase() %>
-            </a> -->
 
-            <!-- MongoDB - _id karena susunan schema dari mongodb -->
-            <a href="/user/<%= user._id %> ">
-              <%= user.name.toUpperCase() %>
-            </a>
-          </li>
-        <% }); %>
-      <% }else { %>
-        <p>Data kosong</p>
-      <% } %> 
-    </ul>
+    <main class="container">
+      <header class="page-header">
+        <div class="header-top">
+          <h1>User List (<%= users.length %>)</h1>
+          <a href="/users/create" class="btn btn-primary">+ Add User</a>
+        </div>
+
+        <form action="/users" method="GET" class="search-form">
+          <input 
+            type="text" 
+            name="search" 
+            placeholder="Search users by name..." 
+            value="<%= typeof search !== 'undefined' ? search : '' %>" 
+          />
+          <button type="submit" class="btn btn-secondary">Search</button>
+        </form>
+      </header>
+
+      <section class="user-list card">
+        <% if (users.length > 0) { %>
+          <ul>
+            <% users.forEach(user => { %>
+              <li class="user-item">
+                <a href="/user/<%= user._id %>" class="user-link">
+                  <span class="user-avatar"><%= user.name.charAt(0).toUpperCase() %></span>
+                  <span class="user-name"><%= user.name %></span>
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="empty-state">No users found.</p>
+        <% } %>
+      </section>
+    </main>
   </body>
 </html>
